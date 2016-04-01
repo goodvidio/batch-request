@@ -41,10 +41,11 @@ chance.mixin({
             opts.port = params.port || chance.pick([80, 3000, 4000, 5000]);
 
             // We want a long-ish word to increase entropy and avoid hash collisions
+            var compiled = _.template('<%= protocol %>://<%= host %>:<%= port %><%= endpoint %>');
             batchRequest[chance.word({
                 length: 15
             })] = {
-                url: _.template('${ protocol }://${ host }:${ port }${ endpoint }', opts)
+                url: compiled(opts)
             };
         });
         return batchRequest;

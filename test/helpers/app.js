@@ -103,7 +103,7 @@ function getApp (options) {
 
     app.use(function (err, req, res, next) {
 
-        console.log(err);
+        // console.log(err);
         // console.log(err.stack);
         next();
     });
