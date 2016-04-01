@@ -11,23 +11,23 @@
   },
   "dependencies": {
     "bluebird": "~0.10.8-0",
-    "lodash": "~2.3.0",
-    "validator": "~2.0.0",
-    "request": "~2.27.0",
-    "methods": "~0.1.0"
+    "lodash": "^2.3.0",
+    "methods": "^0.1.0",
+    "request": "^2.27.0",
+    "validator": "~2.0.0"
   },
   "devDependencies": {
-    "chai": "~1.8.0",
-    "chance": "~0.6.0",
-    "grunt": "~0.4.1",
-    "grunt-cli": "~0.1.9",
-    "grunt-contrib-jshint": "~0.6.4",
-    "grunt-contrib-watch": "~0.5.3",
-    "grunt-simple-mocha": "~0.4.0",
-    "mocha": "~1.13.0",
-    "supertest": "~0.8.0",
-    "grunt-bump": "0.0.11",
-    "express": "~3.4.4"
+    "chai": "*",
+    "chance": "*",
+    "grunt": "*",
+    "grunt-cli": "*",
+    "grunt-contrib-jshint": "*",
+    "grunt-contrib-watch": "*",
+    "grunt-simple-mocha": "*",
+    "mocha": "*",
+    "supertest": "*",
+    "grunt-bump": "*",
+    "express": "*"
   },
   "keywords": [
     "batch",

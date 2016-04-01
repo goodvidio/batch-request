@@ -1,10 +1,17 @@
+'use strict';
+
 module.exports = function (grunt) {
+
     grunt.config.init({
         bump: {
-            options: { push: false }
+            options: {
+                push: false
+            }
         },
         jshint: {
-            options: { jshintrc: '.jshintrc' },
+            options: {
+                jshintrc: '.jshintrc'
+            },
             all: ['Gruntfile.js', 'lib/**/*.js', 'test/**/*.js']
         },
         simplemocha: {
@@ -28,5 +35,6 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-simple-mocha');
 
     grunt.registerTask('default', ['watch']);
-    grunt.registerTask('test', ['jshint', 'simplemocha']);
+    // grunt.registerTask('test', ['jshint', 'simplemocha']);
+    grunt.registerTask('test', ['simplemocha']);
 };
