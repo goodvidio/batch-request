@@ -1,29 +1,62 @@
 {
-  "boss": true,
-  "bitwise": true,
-  "camelcase": true,
-  "curly": true,
-  "eqnull": true,
-  "eqeqeq": true,
-  "expr": true,
-  "immed": true,
-  "indent": 4,
-  "latedef": true,
-  "newcap": true,
-  "noarg": true,
-  "node": true,
-  "quotmark": "single",
-  "regexp": true,
-  "smarttabs": true,
-  "sub": true,
-  "trailing": true,
-  "undef": true,
-  "globals": {
-    "after": true,
-    "afterEach": true,
-    "before": true,
-    "beforeEach": true,
-    "describe": true,
-    "it": true
-  }
+    // Require {} for every new block or scope
+    "curly": true,
+    // Require triple equals (===) for comparison
+    "eqeqeq": true,
+    // Prohibits overwriting prototypes of native objects such as Array, Date etc.
+    "freeze":true,
+    // Require capitalization of all constructor functions e.g. `new F()`
+    "newcap": true,
+    // Prohibit use of `arguments.caller` and `arguments.callee`
+    "noarg": true,
+    // Prohibit use of empty blocks
+    "noempty": true,
+    // Prohibit use of constructors for side-effects (without assignment)
+    "nonew": true,
+    // Tolerate using `[]` notation when it can still be expressed in dot notation
+    "sub": true,
+    // Require all non-global variables to be declared (prevents global leaks)
+    "undef": true,
+    // Unused variables: all variables, last function parameter
+    "unused": true,
+    // Tolerate assignments where comparisons would be expected
+    "boss": true,
+    // Tolerate use of `== null`
+    "eqnull": true,
+    // Requires all functions run in ES5 Strict Mode
+    "strict": true,
+    // Require immediate invocations to be wrapped in parens e.g. `(function () { } ());`
+    "immed": true,
+    // Tolerate `ExpressionStatement` as Programs
+    "expr": true,
+    // Require variables/functions to be defined before being used
+    "latedef": "nofunc",
+    // Quotation mark consistency: require single quotes
+    "quotmark": "single",
+    // Number of spaces to use for indentation
+    "indent": 4,
+    // Node.js
+    "node": true,
+    // Maximum error before stopping
+    "maxerr": "20",
+    // Max number statements per function
+    "maxstatements": 15,
+    // Max depth of nested blocks (within functions)
+    "maxdepth":"3",
+    // Max number of formal params allowed per function. Please see https://sourcemaking.com/refactoring/introduce-parameter-object for using a pattern to overcome overflow of parameters. 3 was selected after taking a look at Clean Code: A Handbook of Agile Software Craftsmanship and other articles regarding code complexity.
+    "maxparams":"4",
+    // According to Code Complete (first edition): 0-5 - the routine is probably fine, 6-10 - start to think about ways to simplify the routine, 10+ - break part of the routine into a second routine and call it from the first routine. I am letting that to 10 unless there is a serious reason to decrease it.
+    "maxcomplexity":"10",
+    "globals": {
+        "it": true,
+        "describe": true,
+        "before": true,
+        "after": true,
+        "expect": true,
+        "assert": true,
+        "should": true,
+        "beforeEach": true,
+        "afterEach": true,
+        "console": true
+    }
 }

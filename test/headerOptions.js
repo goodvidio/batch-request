@@ -1,18 +1,16 @@
-// header options tests
+'use strict';
 
 process.env.NODE_ENV = 'test';
 
-var _ = require('lodash'),
-    Chance = require('chance'),
-    chance = new Chance(),
-    expect = require('chai').expect,
-    methods = require('methods'),
-    request = require('supertest');
+var expect = require('chai').expect;
+var request = require('supertest');
 
-describe('header options', function() {
+describe('header options', function () {
+
     var app;
 
-    before(function(done) {
+    before(function (done) {
+
         app = require('./helpers/app')({
             defaultHeaders: {
                 'default1': 'default1_value'
@@ -22,12 +20,15 @@ describe('header options', function() {
         done();
     });
 
-    after(function(done) {
+    after(function (done) {
+
         app.server.close(done);
     });
 
-    describe('defaultHeaders', function() {
-        it('Header default1', function(done) {
+    describe('defaultHeaders', function () {
+
+        it('Header default1', function (done) {
+
             request(app)
                 .post('/batch')
                 .send({
@@ -35,7 +36,8 @@ describe('header options', function() {
                         url: 'http://localhost:3000/header/default1'
                     }
                 })
-                .expect(200, function(err, res) {
+                .expect(200, function (err, res) {
+
                     expect(err).to.not.exist;
                     expect(res.body).to.have.property('getHeader');
                     expect(res.body.getHeader.statusCode).to.equal(200);
@@ -47,7 +49,8 @@ describe('header options', function() {
                 });
         });
 
-        it('Header default2 does not exist if no default set', function(done) {
+        it('Header default2 does not exist if no default set', function (done) {
+
             request(app)
                 .post('/batch')
                 .send({
@@ -55,7 +58,8 @@ describe('header options', function() {
                         url: 'http://localhost:3000/header/default2'
                     }
                 })
-                .expect(200, function(err, res) {
+                .expect(200, function (err, res) {
+
                     expect(err).to.not.exist;
                     expect(res.body).to.have.property('getHeader');
                     expect(res.body.getHeader.statusCode).to.equal(404);
@@ -64,8 +68,10 @@ describe('header options', function() {
         });
     });
 
-    describe('forwardHeaders', function() {
-        it('Header forward1 exists', function(done) {
+    describe('forwardHeaders', function () {
+
+        it('Header forward1 exists', function (done) {
+
             request(app)
                 .post('/batch')
                 .set('forward1', 'forward1_value')
@@ -74,7 +80,8 @@ describe('header options', function() {
                         url: 'http://localhost:3000/header/forward1'
                     }
                 })
-                .expect(200, function(err, res) {
+                .expect(200, function (err, res) {
+
                     expect(err).to.not.exist;
                     expect(res.body).to.have.property('getHeader');
                     expect(res.body.getHeader.statusCode).to.equal(200);
@@ -86,7 +93,8 @@ describe('header options', function() {
                 });
         });
 
-        it('Header forward1 does not exist if not provided', function(done) {
+        it('Header forward1 does not exist if not provided', function (done) {
+
             request(app)
                 .post('/batch')
                 .send({
@@ -94,7 +102,8 @@ describe('header options', function() {
                         url: 'http://localhost:3000/header/forward1'
                     }
                 })
-                .expect(200, function(err, res) {
+                .expect(200, function (err, res) {
+
                     expect(err).to.not.exist;
                     expect(res.body).to.have.property('getHeader');
                     expect(res.body.getHeader.statusCode).to.equal(404);

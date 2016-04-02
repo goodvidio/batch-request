@@ -1,16 +1,12 @@
-// Test app
-var _ = require('lodash'),
-    express = require('express'),
-    Chance = require('chance'),
-    chance = new Chance(),
-    batchRequest = require('../../lib/batch-request');
+'use strict';
 
-function getApp(options) {
-    var batch = batchRequest(options);
+var express = require('express');
+var Chance = require('chance');
+var bodyParser = require('body-parser');
+var chance = new Chance();
+var batchRequest = require('../../lib/batch-request');
 
-    var app = express();
-
-    app.use(express.json());
+function setupRoutes (app, batch) {
 
     // A POST endpoint to use the batch middleware
     app.post('/batch', batch.validate, batch);
@@ -18,11 +14,13 @@ function getApp(options) {
     app.get('/batch', batch.validate, batch);
 
     // Let's make some fake endpoints
-    app.get('/users/:id/name', function(req, res) {
+    app.get('/users/:id/name', function (req, res) {
+
         res.json(chance.name());
     });
 
-    app.post('/users/:id/name', function(req, res) {
+    app.post('/users/:id/name', function (req, res) {
+
         // If a first name is sent in, we will reflect it so we can test that it was
         // received correctly.
         if (req.body.first) {
@@ -32,11 +30,13 @@ function getApp(options) {
         }
     });
 
-    app.put('/users/:id/name', function(req, res) {
+    app.put('/users/:id/name', function (req, res) {
+
         res.json(chance.name());
     });
 
-    app.post('/users/:id/deep', function(req, res) {
+    app.post('/users/:id/deep', function (req, res) {
+
         res.json({
             email: chance.email(),
             mixed: {
@@ -48,26 +48,32 @@ function getApp(options) {
         });
     });
 
-    app.get('/users/:id/email', function(req, res) {
+    app.get('/users/:id/email', function (req, res) {
+
         res.json(chance.email());
     });
 
-    app.get('/users/:id/company', function(req, res) {
+    app.get('/users/:id/company', function (req, res) {
+
         res.json(chance.capitalize(chance.word()));
     });
 
-    app.get('/users/:id/hammertime', function(req, res) {
+    app.get('/users/:id/hammertime', function (req, res) {
+
         res.json(new Date().getTime());
     });
 
-    app.get('/users/:id/delay', function(req, res, next) {
-        setTimeout(function() {
+    app.get('/users/:id/delay', function (req, res, next) {
+
+        setTimeout(function () {
+
             res.json(new Date().getTime());
             next();
         }, 250);
     });
 
-    app.get('/header/:name', function(req, res) {
+    app.get('/header/:name', function (req, res) {
+
         if ((req.params.name in req.headers)) {
             res.json({
                 name: req.params.name,
@@ -77,6 +83,29 @@ function getApp(options) {
             res.writeHead(404);
             res.end();
         }
+    });
+
+}
+
+function getApp (options) {
+
+    var batch = batchRequest(options);
+
+    var app = express();
+
+    app.use(bodyParser.urlencoded({
+        extended: true
+    }));
+
+    app.use(bodyParser.json());
+
+    setupRoutes(app, batch);
+
+    app.use(function (err, req, res, next) {
+
+        // console.log(err);
+        // console.log(err.stack);
+        next();
     });
 
     var port = 3000;
