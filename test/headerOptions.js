@@ -30,17 +30,17 @@ describe('header options', function() {
         it('Header default1', function(done) {
             request(app)
                 .post('/batch')
-                .send({
-                    getHeader: {
+                .send([
+                    {
                         url: 'http://localhost:3000/header/default1'
                     }
-                })
+                ])
                 .expect(200, function(err, res) {
                     expect(err).to.not.exist;
-                    expect(res.body).to.have.property('getHeader');
-                    expect(res.body.getHeader.statusCode).to.equal(200);
-                    expect(res.body.getHeader.body).to.be.a('string');
-                    var obj = JSON.parse(res.body.getHeader.body);
+                    expect(res.body.length).to.equal(1);
+                    expect(res.body[0].statusCode).to.equal(200);
+                    expect(res.body[0].body).to.be.a('string');
+                    var obj = JSON.parse(res.body[0].body);
                     expect(obj.value).to.be.a('string');
                     expect(obj.value).to.be.equal('default1_value');
                     done();
@@ -50,15 +50,15 @@ describe('header options', function() {
         it('Header default2 does not exist if no default set', function(done) {
             request(app)
                 .post('/batch')
-                .send({
-                    getHeader: {
+                .send([
+                    {
                         url: 'http://localhost:3000/header/default2'
                     }
-                })
+                ])
                 .expect(200, function(err, res) {
                     expect(err).to.not.exist;
-                    expect(res.body).to.have.property('getHeader');
-                    expect(res.body.getHeader.statusCode).to.equal(404);
+                    expect(res.body.length).to.equal(1);
+                    expect(res.body[0].statusCode).to.equal(404);
                     done();
                 });
         });
@@ -69,17 +69,17 @@ describe('header options', function() {
             request(app)
                 .post('/batch')
                 .set('forward1', 'forward1_value')
-                .send({
-                    getHeader: {
+                .send([
+                    {
                         url: 'http://localhost:3000/header/forward1'
                     }
-                })
+                ])
                 .expect(200, function(err, res) {
                     expect(err).to.not.exist;
-                    expect(res.body).to.have.property('getHeader');
-                    expect(res.body.getHeader.statusCode).to.equal(200);
-                    expect(res.body.getHeader.body).to.be.a('string');
-                    var obj = JSON.parse(res.body.getHeader.body);
+                    expect(res.body.length).to.equal(1);
+                    expect(res.body[0].statusCode).to.equal(200);
+                    expect(res.body[0].body).to.be.a('string');
+                    var obj = JSON.parse(res.body[0].body);
                     expect(obj.value).to.be.a('string');
                     expect(obj.value).to.be.equal('forward1_value');
                     done();
@@ -89,15 +89,15 @@ describe('header options', function() {
         it('Header forward1 does not exist if not provided', function(done) {
             request(app)
                 .post('/batch')
-                .send({
-                    getHeader: {
+                .send([
+                    {
                         url: 'http://localhost:3000/header/forward1'
                     }
-                })
+                ])
                 .expect(200, function(err, res) {
                     expect(err).to.not.exist;
-                    expect(res.body).to.have.property('getHeader');
-                    expect(res.body.getHeader.statusCode).to.equal(404);
+                    expect(res.body.length).to.equal(1);
+                    expect(res.body[0].statusCode).to.equal(404);
                     done();
                 });
         });

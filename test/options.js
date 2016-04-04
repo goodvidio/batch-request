@@ -16,7 +16,7 @@ chance.mixin({
         params = params || {};
         params.size = params.size || chance.d12();
 
-        var batchRequest = {};
+        var batchRequest = [];
 
         _.times(params.size, function() {
             var opts = _.clone(params);
@@ -34,9 +34,9 @@ chance.mixin({
             opts.port = params.port || chance.pick([80, 3000, 4000, 5000]);
 
             // We want a long-ish word to increase entropy and avoid hash collisions
-            batchRequest[chance.word({length: 15})] = {
+            batchRequest.push({
                 url: _.template('${ protocol }://${ host }:${ port }${ endpoint }', opts)
-            };
+            });
         });
         return batchRequest;
     }
