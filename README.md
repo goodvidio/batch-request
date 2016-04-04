@@ -1,33 +1,51 @@
 Batch Request
 =============
 
-A simple library for batching HTTP requests
+A simple library for batching HTTP requests. This is a fork from [batch-request](http://batch-request.socialradar.com). We have updated the
+library and made a few modifications.
 
-Looking for [the Koa version of this module](https://github.com/socialradar/koa-batch)?
+With the batch-request module, you would pass requests like this:
+```
+{
+    request1: {
+        url: 'http://google.com',
+        method: 'GET',
+        dependent: 'request2'
+    },
+    request2: {
+        url: 'http://oneurl.com',
+        method: 'POST',
+        body: {
+            field: "value"
+        }
+    }
+}
+```
+while in this fork you would pass it like this:
+```
+[
+    {
+        url: 'http://google.com',
+        method: 'GET'
+    },
+    {
+        url: 'http://oneurl.com',
+        method: 'POST',
+        body: {
+            field: "value"
+        }
+    }
+]
+```
+which means simpler declaration of the requests but abandon of the
+requests dependencies.
 
-[View Documentation](http://batch-request.socialradar.com)
+## Documentation
+Soon to come. For the moment, check [batch-request](http://batch-request.socialradar.com/#usage).
 
-[![Build Status](https://travis-ci.org/socialradar/batch-request.png?branch=master)](https://travis-ci.org/socialradar/batch-request) [![Built with Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/)
+## Todo
 
-## QuickStart
-
-Download via [NPM](http://npmjs.org)
-
-[![NPM](https://nodei.co/npm/batch-request.png?compact=true)](https://nodei.co/npm/batch-request/)
-
-then in your app
-
-    // Use Batch Request as middleware on an endpoint you want to service batch requests
-    app.post('/batch', batch);
-
-
-Optionally use our included middleware to check the validity of your batch request
-
-    // Include the batch.validate middleware before batch middleware
-    app.post('/batch', batch.validate, batch);
-
-And that's it!
-
-Proudly written in Washington, D.C. by:
-
-[![SocialRadar](https://raw.github.com/socialradar/batch-request/master/social-radar-black-orange.png)](http://socialradar.com)
+- [ ] Rename module
+- [ ] Publish to NPM
+- [ ] Write Documentation
+- [ ] Add Travis build job
