@@ -69,7 +69,7 @@ describe('validate', function () {
                     expect(err).to.be.null;
                     expect(res.body.error).to.exist;
                     expect(res.body.error.message)
-                    .to.equal('Cannot make a batch request with an empty request object');
+                        .to.equal('Cannot make a batch request with an empty request object');
                     done(err);
                 });
         });
@@ -90,63 +90,55 @@ describe('validate', function () {
             });
 
             it('will return a validation error if allowed hosts set and request url not allowed',
-            function (done) {
+                function (done) {
 
-                // Note, for the appAllowed app, the allowedHosts parameter contains "socialradar.com" and that's it.
-                request(appAllowed)
-                    .post('/batch')
-                    .send({
-                        disallowedUrl: {
-                            url: 'http://www.google.com'
-                        }
-                    })
-                    .expect(400, function (err, res) {
+                    // Note, for the appAllowed app, the allowedHosts parameter contains "socialradar.com" and that's it.
+                    request(appAllowed)
+                        .post('/batch')
+                        .send({
+                            disallowedUrl: {
+                                url: 'http://www.google.com'
+                            }
+                        })
+                        .expect(400, function (err, res) {
 
-                        expect(res.body.error).to.exist;
-                        expect(res.body.error.host).to.equal('www.google.com');
-                        done(err);
-                    });
-            });
+                            expect(res.body.error).to.exist;
+                            expect(res.body.error.host).to.equal('www.google.com');
+                            done(err);
+                        });
+                });
 
             it('will return a validation error if allowed hosts set and one request url not allowed',
-            function (done) {
+                function (done) {
 
-                request(appAllowed)
-                    .post('/batch')
-                    .send({
-                        allowedUrl1: {
-                            url: 'https://goodvid.io/video-gallery'
-                        },
-                        allowedUrl2: {
+                    request(appAllowed)
+                        .post('/batch')
+                        .send([{
+                            url: 'https://goodvid.io/install'
+                        }, {
                             url: 'https://goodvid.io/about'
-                        },
-                        disallowedUrl: {
+                        }, {
                             url: 'http://www.google.com'
-                        }
-                    })
-                    .expect(400, function (err, res) {
+                        }])
+                        .expect(400, function (err, res) {
 
-                        expect(res.body.error).to.exist;
-                        expect(res.body.error.host).to.equal('www.google.com');
-                        done(err);
-                    });
-            });
+                            expect(res.body.error).to.exist;
+                            expect(res.body.error.host).to.equal('www.google.com');
+                            done(err);
+                        });
+                });
 
             it('will not return a validation error if all requests are to allowed', function (done) {
 
                 request(appAllowed)
                     .post('/batch')
-                    .send({
-                        allowedUrl1: {
-                            url: 'https://goodvid.io/about'
-                        },
-                        allowedUrl2: {
-                            url: 'https://goodvid.io/install'
-                        },
-                        allowedUrl3: {
-                            url: 'https://goodvid.io/video-gallery'
-                        }
-                    })
+                    .send([{
+                        url: 'https://goodvid.io/about'
+                    }, {
+                        url: 'https://goodvid.io/install'
+                    }, {
+                        url: 'https://goodvid.io/video-gallery'
+                    }])
                     .expect(200, function (err, res) {
 
                         expect(res.body.error).to.not.exist;
@@ -158,20 +150,15 @@ describe('validate', function () {
 
                 request(appAllowed)
                     .post('/batch')
-                    .send({
-                        allowedUrl1: {
-                            url: 'https://goodvid.io/install'
-                        },
-                        allowedUrl2: {
-                            url: 'https://goodvid.io/about'
-                        },
-                        allowedUrl3: {
-                            url: 'https://goodvid.io/video-gallery'
-                        },
-                        testingLocalhost: {
-                            url: 'http://localhost:3001/users/test/name'
-                        }
-                    })
+                    .send([{
+                        url: 'https://goodvid.io/install'
+                    }, {
+                        url: 'https://goodvid.io/about'
+                    }, {
+                        url: 'https://goodvid.io/video-gallery'
+                    }, {
+                        url: 'http://localhost:3001/users/test/name'
+                    }])
                     .expect(200, function (err, res) {
 
                         expect(res.body.error).to.not.exist;
@@ -187,12 +174,10 @@ describe('validate', function () {
 
             request(app)
                 .post('/batch')
-                .send({
-                    bogusMethod: {
-                        method: chance.word() + chance.word(),
-                        url: 'http://localhost:4000/users/1/name'
-                    }
-                })
+                .send([{
+                    method: chance.word() + chance.word(),
+                    url: 'http://localhost:4000/users/1/name'
+                }])
                 .expect(400, function (err, res) {
 
                     expect(err).to.be.null;
@@ -206,18 +191,16 @@ describe('validate', function () {
 
             request(app)
                 .post('/batch')
-                .send({
-                    bogusUrl: {
-                        url: chance.word()
-                    }
-                })
+                .send([{
+                    url: chance.word()
+                }])
                 .expect(400, function (err, res) {
 
                     expect(err).to.be.null;
                     expect(res.body.error).to.exist;
                     expect(res.body.error.type).to.equal('ValidationError');
                     expect(res.body.error.message).to.equal('Invalid URL');
-                    expect(res.body.error.request).to.equal('bogusUrl');
+                    expect(res.body.error.request).to.equal(0);
                     done();
                 });
         });
@@ -226,21 +209,18 @@ describe('validate', function () {
 
             request(app)
                 .get('/batch')
-                .send({
-                    getRequestWithBody: {
-                        method: 'get',
-                        url: 'http://localhost:4000/users/1/name',
-                        body: '{"foo":"bar"}'
-                    }
-                })
+                .send([{
+                    method: 'get',
+                    url: 'http://localhost:4000/users/1/name',
+                    body: '{"foo":"bar"}'
+                }])
                 .expect(400, function (err, res) {
 
                     expect(err).to.be.null;
                     expect(res.body.error).to.exist;
                     expect(res.body.error.type).to.equal('ValidationError');
-                    expect(res.body.error.message)
-                    .to.equal('Request body not allowed for this method');
-                    expect(res.body.error.request).to.equal('getRequestWithBody');
+                    expect(res.body.error.message).to.equal('Request body not allowed for this method');
+                    expect(res.body.error.request).to.equal(0);
                     done();
                 });
         });
