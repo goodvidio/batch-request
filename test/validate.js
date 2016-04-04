@@ -51,12 +51,7 @@ describe('validate', function () {
             request(app)
                 .post('/batch')
                 .send(chance.word())
-                .expect(400, function (err, res) {
-
-                    expect(err).to.be.null;
-                    expect(res.body.error).to.exist;
-                    done();
-                });
+                .expect(400, done);
         });
 
         it('rejects a blank request', function (done) {
@@ -67,8 +62,7 @@ describe('validate', function () {
                 .expect(400, function (err, res) {
 
                     expect(err).to.be.null;
-                    expect(res.body.error).to.exist;
-                    expect(res.body.error.message)
+                    expect(res.body.message)
                         .to.equal('Cannot make a batch request with an empty request object');
                     done(err);
                 });
@@ -102,8 +96,8 @@ describe('validate', function () {
                         })
                         .expect(400, function (err, res) {
 
-                            expect(res.body.error).to.exist;
-                            expect(res.body.error.host).to.equal('www.google.com');
+                            expect(res.body.name).to.equal('BadRequest');
+                            expect(res.body.message.host).to.equal('www.google.com');
                             done(err);
                         });
                 });
@@ -122,8 +116,8 @@ describe('validate', function () {
                         }])
                         .expect(400, function (err, res) {
 
-                            expect(res.body.error).to.exist;
-                            expect(res.body.error.host).to.equal('www.google.com');
+                            expect(res.body.name).to.equal('BadRequest');
+                            expect(res.body.message.host).to.equal('www.google.com');
                             done(err);
                         });
                 });
@@ -181,8 +175,8 @@ describe('validate', function () {
                 .expect(400, function (err, res) {
 
                     expect(err).to.be.null;
-                    expect(res.body.error).to.exist;
-                    expect(res.body.error.type).to.equal('ValidationError');
+                    expect(res.body.name).to.equal('BadRequest');
+                    expect(res.body.message).to.exist;
                     done();
                 });
         });
@@ -197,10 +191,9 @@ describe('validate', function () {
                 .expect(400, function (err, res) {
 
                     expect(err).to.be.null;
-                    expect(res.body.error).to.exist;
-                    expect(res.body.error.type).to.equal('ValidationError');
-                    expect(res.body.error.message).to.equal('Invalid URL');
-                    expect(res.body.error.request).to.equal(0);
+                    expect(res.body.name).to.equal('BadRequest');
+                    expect(res.body.message.reason).to.equal('Invalid URL');
+                    expect(res.body.message.request).to.equal(0);
                     done();
                 });
         });
@@ -217,10 +210,9 @@ describe('validate', function () {
                 .expect(400, function (err, res) {
 
                     expect(err).to.be.null;
-                    expect(res.body.error).to.exist;
-                    expect(res.body.error.type).to.equal('ValidationError');
-                    expect(res.body.error.message).to.equal('Request body not allowed for this method');
-                    expect(res.body.error.request).to.equal(0);
+                    expect(res.body.name).to.equal('BadRequest');
+                    expect(res.body.message.reason).to.equal('Request body not allowed for this method');
+                    expect(res.body.message.request).to.equal(0);
                     done();
                 });
         });

@@ -81,9 +81,9 @@ describe('options', function () {
                 .expect(400, function (err, res) {
 
                     expect(err).to.be.null;
-                    expect(res.body.error).to.exist;
-                    expect(res.body.error.type).to.equal('ValidationError');
-                    expect(res.body.error.message)
+                    expect(res.body).to.exist;
+                    expect(res.body.name).to.equal('BadRequest');
+                    expect(res.body.message)
                     .to.equal('Over the max request limit. Please limit batches to 20 requests');
 
                     // Now let's try one that's right on the limit, it should pass.

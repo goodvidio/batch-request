@@ -101,11 +101,15 @@ function getApp (options) {
 
     setupRoutes(app, batch);
 
-    app.use(function (err, req, res, next) {
+    app.use(function (err, req, res, next) { /* jshint ignore:line */
 
-        // console.log(err);
-        // console.log(err.stack);
-        next();
+        if (req.app.get('env') !== 'development' &&
+            req.app.get('env') !== 'test') {
+
+            delete err.stack;
+        }
+
+        res.status(err.statusCode || 500).json(err);
     });
 
     var port = 3000;
