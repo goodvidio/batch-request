@@ -35,6 +35,5 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-simple-mocha');
 
     grunt.registerTask('default', ['watch']);
-    // grunt.registerTask('test', ['jshint', 'simplemocha']);
-    grunt.registerTask('test', ['simplemocha']);
+    grunt.registerTask('test', ['jshint', 'simplemocha']);
 };
